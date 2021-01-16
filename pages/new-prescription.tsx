@@ -1,19 +1,31 @@
 import React from "react";
-import { Heading, Button, Box } from "@chakra-ui/react";
+import { Heading, Button, Box, Grid, GridItem } from "@chakra-ui/react";
+import Head from "next/head";
 
 const Home: React.FC = () => {
   return (
-    <Box display="table" m="0 auto">
-      <Heading display="table" m="0 auto" mb="50px">
-        Pillzone
-      </Heading>
-      <Heading fontSize="xl">Some App Description Here</Heading>
-      <a href="/new-prescription">
-        <Button display="table" m="0 auto" mt="100px">
-          Get Started
-        </Button>
-      </a>
-    </Box>
+    <>
+      <Head>
+        <title>New Prescription | Pillzone</title>
+      </Head>
+
+      <Box pr={10} pl={10}>
+        <Heading display="table" m="0 auto" mb="100px">
+          Add New Prescription
+        </Heading>
+        <Grid templateColumns="repeat(6, 1fr)" gap={4}>
+          <GridItem colSpan={3}>
+            <Box>
+              <Heading mb="50px">Upload Image</Heading>
+            </Box>
+          </GridItem>
+          <GridItem colSpan={3}>
+            {" "}
+            <Heading>Preview</Heading>
+          </GridItem>
+        </Grid>
+      </Box>
+    </>
   );
 };
 
