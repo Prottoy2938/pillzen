@@ -106,7 +106,7 @@ const UserLogin: React.FC = () => {
           <Box
             className={styles.boxContainer}
             width={[
-              "100%", // base
+              "100%", // base a
               "90%", // 480px upwards
               "80%", // 768px upwards
               "75%", // 992px upwards
