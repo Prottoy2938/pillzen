@@ -1,4 +1,10 @@
-import React, { useCallback, useState, useRef } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useState,
+  useRef,
+  useEffect,
+} from "react";
 import {
   Heading,
   Button,
@@ -14,8 +20,11 @@ import { useDropzone } from "react-dropzone";
 import { FaFileImport } from "react-icons/fa";
 import Camera from "../src/components/use-camera/use-camera";
 import { AiOutlineCamera } from "react-icons/ai";
+import { AuthContext } from "../src/auth/main-auth-functionality";
+import { useRouter } from "next/router";
 
 const Home: React.FC = () => {
+  const { user, runningAuth } = useContext(AuthContext);
   const [selectedImgURL, setSelectedImgURL] = useState<string>(null);
   const [openCamera, setOpenCamera] = useState(false);
 
@@ -26,6 +35,8 @@ const Home: React.FC = () => {
   const onDrop = useCallback((acceptedFiles) => {
     setSelectedImgURL(URL.createObjectURL(acceptedFiles[0]));
   }, []);
+
+  const router = useRouter();
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -55,6 +66,13 @@ const Home: React.FC = () => {
   const handleOpenCamera = (): void => {
     setOpenCamera(true);
   };
+
+  useEffect(() => {
+    //if the auth check if complete and the user is not logged-in, sending him to the join/login page
+    if (!user && !runningAuth) {
+      router.push("/login");
+    }
+  }, [user, runningAuth]);
 
   return (
     <>

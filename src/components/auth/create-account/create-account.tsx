@@ -28,6 +28,7 @@ const UserLogin: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [setPhoneNumber, setSetPhoneNumber] = useState("");
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -39,6 +40,10 @@ const UserLogin: React.FC = () => {
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFullName(e.target.value);
+  };
+
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSetPhoneNumber(e.target.value);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -174,6 +179,17 @@ const UserLogin: React.FC = () => {
                     </InputRightElement>
                   </InputGroup>
                   <FormErrorMessage>{passwordError}</FormErrorMessage>
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel htmlFor="phonenumber">Phone Number</FormLabel>
+                  <Input
+                    onChange={handlePhoneNumberChange}
+                    placeholder="Your Phone Number (include country code)"
+                    type="tel"
+                    id="phonenumber"
+                    value={setPhoneNumber}
+                    autoFocus
+                  />
                 </FormControl>
                 <Box
                   className={styles.submitBtnContainer}

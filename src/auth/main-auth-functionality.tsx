@@ -142,8 +142,10 @@ const useProvideAuth = (): UseProvideAuthReturned => {
     password: string,
     {
       fullName,
+      phoneNumber,
     }: {
       fullName: string;
+      phoneNumber: string;
     }
   ): void => {
     setLoginLoadingDispatch({ type: "creatingAccount" });
@@ -166,11 +168,15 @@ const useProvideAuth = (): UseProvideAuthReturned => {
               .then((idToken: string) => {
                 //not passing down any user information except the users token, will use that in the backend api to get users info
                 axios
-                  .get("/api/auth/create-new-user", {
-                    headers: {
-                      token: idToken,
-                    },
-                  })
+                  .post(
+                    "/api/create-new-user",
+                    { phoneNumber },
+                    {
+                      headers: {
+                        token: idToken,
+                      },
+                    }
+                  )
                   .then(() => {
                     // getUserData(); //call this function at this stage so we can fetch user data once the account has been created, and update the `userInfoDB` state
                   })

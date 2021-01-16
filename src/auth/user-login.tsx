@@ -19,7 +19,7 @@ const UserLogin: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     //if the auth check if complete and the user is not logged-in, sending him to the join/login page
     if (user && !runningAuth) {
-      router.push("/create-prescription");
+      router.push("/new-prescription");
     }
   }, [user, runningAuth]);
   return (
