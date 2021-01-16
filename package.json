@@ -16,7 +16,9 @@
     "framer-motion": "^3.2.1",
     "next": "^10.0.1",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "react-dropzone": "^11.2.4",
+    "react-icons": "^4.1.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.5",
