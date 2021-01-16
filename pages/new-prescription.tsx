@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import {
   Heading,
   Button,
@@ -7,18 +7,24 @@ import {
   GridItem,
   Text,
   Image,
+  useToast,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useDropzone } from "react-dropzone";
 import { FaFileImport } from "react-icons/fa";
+import Camera from "../src/components/use-camera/use-camera";
+import { AiOutlineCamera } from "react-icons/ai";
 
 const Home: React.FC = () => {
-  const [selectedFile, setSelectedFile] = useState<File>();
+  const [selectedImgURL, setSelectedImgURL] = useState<string>(null);
+  const [openCamera, setOpenCamera] = useState(false);
+
+  const toast = useToast();
+
+  const cam = useRef(null);
 
   const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles);
-    // @ts-ignore
-    setSelectedFile(acceptedFiles[0]);
+    setSelectedImgURL(URL.createObjectURL(acceptedFiles[0]));
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -28,13 +34,35 @@ const Home: React.FC = () => {
     accept: "image/*",
   });
 
+  const handleCamError = (): void => {
+    toast({
+      title: "Something went wrong",
+      description: "Something went wrong while capturing image",
+      status: "error",
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+
+  function captureImage(imgSrc: string) {
+    setSelectedImgURL(imgSrc);
+    setOpenCamera(false);
+  }
+
+  const handleCloseCamera = (): void => {
+    setOpenCamera(false);
+  };
+  const handleOpenCamera = (): void => {
+    setOpenCamera(true);
+  };
+
   return (
     <>
       <Head>
         <title>New Prescription | Pillzone</title>
       </Head>
 
-      <Box pr={10} pl={10}>
+      <Box pr={10} pl={10} mb={20}>
         <Heading display="table" m="0 auto" mb="100px">
           Add New Prescription
         </Heading>
@@ -73,13 +101,59 @@ const Home: React.FC = () => {
                 </Box>
               </GridItem>
               <GridItem m="0 auto" colSpan={3}>
+                <Heading size="md" mb="30px">
+                  Capture Image
+                </Heading>
+
                 <Box>
-                  <Heading size="md">Capture Image</Heading>
+                  {openCamera ? (
+                    <Box textAlign="center">
+                      <Camera
+                        front={false}
+                        capture={captureImage}
+                        ref={cam}
+                        width="100%"
+                        height="100%"
+                        focusWidth="100%"
+                        focusHeight="100%"
+                        onError={handleCamError}
+                      />
+                      <Button
+                        colorScheme="facebook"
+                        mt={5}
+                        size="sm"
+                        // https://stackoverflow.com/questions/37949981/call-child-method-from-parent
+                        onClick={(img) => cam.current.capture(img)}
+                      >
+                        Take Image
+                      </Button>
+                      <Button
+                        display="block"
+                        size="sm"
+                        variant="ghost"
+                        // https://stackoverflow.com/questions/37949981/call-child-method-from-parent
+                        onClick={handleCloseCamera}
+                        m="0 auto"
+                        mt={5}
+                      >
+                        close camera
+                      </Button>
+                    </Box>
+                  ) : (
+                    <Button
+                      leftIcon={<AiOutlineCamera />}
+                      variant="outline"
+                      size="sm"
+                      onClick={handleOpenCamera}
+                    >
+                      Open Camera
+                    </Button>
+                  )}
                 </Box>
               </GridItem>
             </Grid>
             <Button
-              isDisabled={!selectedFile}
+              isDisabled={!selectedImgURL}
               pr={20}
               pl={20}
               bg="rgba(16, 181, 60, 0.7)"
@@ -94,13 +168,9 @@ const Home: React.FC = () => {
           </GridItem>
           <GridItem m="0 auto" colSpan={3}>
             <Heading mb="30px">Preview</Heading>
-            {selectedFile ? (
+            {selectedImgURL && selectedImgURL.length ? (
               <Box>
-                <Image
-                  w="80%"
-                  src={URL.createObjectURL(selectedFile)}
-                  alt="Uploaded Image"
-                />
+                <Image w="80%" src={selectedImgURL} alt="Uploaded Image" />
               </Box>
             ) : null}
           </GridItem>
