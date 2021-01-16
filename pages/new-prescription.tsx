@@ -56,6 +56,17 @@ const Home: React.FC = () => {
     setOpenCamera(true);
   };
 
+  const handleSubmit = (): void => {
+    toast({
+      title: "Processing",
+      description: "Wait a while ....",
+      status: "info",
+      duration: 9000,
+      isClosable: true,
+      position: "bottom-right",
+    });
+  };
+
   return (
     <>
       <Head>
@@ -162,6 +173,7 @@ const Home: React.FC = () => {
               _hover={{
                 background: "rgba(16, 181, 60, 0.9)",
               }}
+              onClick={handleSubmit}
             >
               Submit
             </Button>
