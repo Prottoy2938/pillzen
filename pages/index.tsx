@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Heading, Button, Box } from "@chakra-ui/react";
 import Head from "next/head";
+import { AuthContext } from "../src/auth/main-auth-functionality";
 
 const Home: React.FC = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <>
       <Head>
@@ -13,7 +16,7 @@ const Home: React.FC = () => {
           Pillzone
         </Heading>
         <Heading fontSize="xl">Some App Description Here</Heading>
-        <a href="/new-prescription">
+        <a href={user ? "/new-prescription" : "create-account"}>
           <Button display="table" m="0 auto" mt="100px">
             Get Started
           </Button>
