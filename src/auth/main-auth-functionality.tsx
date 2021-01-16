@@ -148,6 +148,7 @@ const useProvideAuth = (): UseProvideAuthReturned => {
       phoneNumber: string;
     }
   ): void => {
+    console.log(phoneNumber);
     setLoginLoadingDispatch({ type: "creatingAccount" });
     clearErrors(); //clearing form input errors
 
@@ -178,6 +179,7 @@ const useProvideAuth = (): UseProvideAuthReturned => {
                     }
                   )
                   .then(() => {
+                    console.log("successful");
                     // getUserData(); //call this function at this stage so we can fetch user data once the account has been created, and update the `userInfoDB` state
                   })
                   .catch(() => {

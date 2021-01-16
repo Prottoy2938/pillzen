@@ -45,6 +45,7 @@ export interface UseProvideAuthReturned {
       fullName,
     }: {
       fullName: string;
+      phoneNumber: string;
     }
   ) => void;
   handleLogin: (email: string, password: string) => void;

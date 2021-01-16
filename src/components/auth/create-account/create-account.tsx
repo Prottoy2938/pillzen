@@ -28,7 +28,7 @@ const UserLogin: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [setPhoneNumber, setSetPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -43,13 +43,14 @@ const UserLogin: React.FC = () => {
   };
 
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSetPhoneNumber(e.target.value);
+    setPhoneNumber(e.target.value);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleSignUp(email, password, {
       fullName,
+      phoneNumber,
     });
   };
 
@@ -187,7 +188,7 @@ const UserLogin: React.FC = () => {
                     placeholder="Your Phone Number (include country code)"
                     type="tel"
                     id="phonenumber"
-                    value={setPhoneNumber}
+                    value={phoneNumber}
                     autoFocus
                   />
                 </FormControl>
