@@ -46,50 +46,56 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    firebase.default
-      .auth()
-      .currentUser.getIdToken(/* forceRefresh */ true)
-      .then((idToken: string) => {
-        axios
-          .get(
-            "/api/get-user-data",
+    //if the auth check if complete and the user is not logged-in, sending him to the join/login page
+    if (!user && !runningAuth) {
+      router.push("/login");
+    } else if (user && !runningAuth) {
+      firebase.default
+        .auth()
+        .currentUser.getIdToken(/* forceRefresh */ true)
+        .then((idToken: string) => {
+          axios
+            .get(
+              "/api/get-user-data",
 
-            {
-              headers: {
-                token: idToken,
-              },
-            }
-          )
-          .then((res) => {
-            const { phoneNumber, name } = res.data;
+              {
+                headers: {
+                  token: idToken,
+                },
+              }
+            )
+            .then((res) => {
+              console.log(res.data);
+              const { phoneNumber, name } = res.data;
 
-            setPhoneNumber(phoneNumber);
-            setUserName(name);
-          })
-          .catch((e) => {
-            toast({
-              title: "Something Went Wrong",
-              description:
-                "This issue is from us. We appreciate your patience ",
-              status: "error",
-              duration: 9000,
-              isClosable: true,
-              position: "bottom-right",
+              setPhoneNumber(phoneNumber);
+              setUserName(name);
+            })
+            .catch((e) => {
+              toast({
+                title: "Something Went Wrong",
+                description:
+                  "This issue is from us. We appreciate your patience ",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+                position: "bottom-right",
+              });
             });
+        })
+        .catch((e) => {
+          console.error(e);
+          toast({
+            title: "Something Went Wrong",
+            description: "Make Sure You're Signed in Properly",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+            position: "bottom-right",
           });
-      })
-      .catch((e) => {
-        console.error(e);
-        toast({
-          title: "Something Went Wrong",
-          description: "Make Sure You're Signed in Properly",
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-          position: "bottom-right",
         });
-      });
-  }, []);
+    }
+  }, [user, runningAuth]);
 
   const handleNameChange = (e: any) => {
     setUserName(e.target.value);
@@ -144,12 +150,6 @@ const Home: React.FC = () => {
       position: "bottom-right",
     });
   };
-  useEffect(() => {
-    //if the auth check if complete and the user is not logged-in, sending him to the join/login page
-    if (!user && !runningAuth) {
-      router.push("/login");
-    }
-  }, [user, runningAuth]);
 
   return (
     <>
