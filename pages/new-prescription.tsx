@@ -17,6 +17,14 @@ import {
   Stack,
   Input,
   Select,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useDropzone } from "react-dropzone";
@@ -44,6 +52,8 @@ const Home: React.FC = () => {
   const toast = useToast();
 
   const cam = useRef(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
 
   const handleNotificationChange = (e) => {
     setNotificationMethod(e.target.value);
@@ -75,6 +85,7 @@ const Home: React.FC = () => {
               setUserName(name);
             })
             .catch((e) => {
+              console.error(e);
               toast({
                 title: "Something Went Wrong",
                 description:
@@ -173,8 +184,8 @@ const Home: React.FC = () => {
                   notificationMethod,
                 })
                 .then((res) => {
-                  //TODO: Handle data here
                   console.log(res);
+                  onOpen(); //opening the success model
                 })
                 .catch((e) => {
                   console.error(e);
@@ -301,7 +312,7 @@ const Home: React.FC = () => {
               </GridItem>
             </Grid>
           </GridItem>
-          <GridItem m="0 auto" colSpan={3}>
+          <GridItem w="100%" m="0 auto" colSpan={3}>
             <Heading mb="30px">Preview</Heading>
             {selectedImgURL && selectedImgURL.length ? (
               <Box>
@@ -376,6 +387,44 @@ const Home: React.FC = () => {
         </Grid>
       </Box>
       <DashboardDrawer />
+      {/* Success Modal */}
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Submission Successful</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            <Text>
+              {" "}
+              You Will Receive Reminders on Your Phone When It's Time to Take
+              the Pills.
+            </Text>
+            <Text fontSize="sm" mt={8}>
+              If you have any question, email us at:{" "}
+              <a href="mailto:pillgen27@gmail.com" style={{ color: "purple" }}>
+                pillgen27@gmail.com
+              </a>
+            </Text>
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button
+              colorScheme="green"
+              ml={3}
+              ref={cancelRef}
+              onClick={onClose}
+            >
+              Okay
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };

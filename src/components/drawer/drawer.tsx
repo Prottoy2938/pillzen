@@ -10,10 +10,11 @@ import {
   DrawerFooter,
   DrawerBody,
   Box,
+  Stack,
 } from "@chakra-ui/react";
 import { BsBoundingBox } from "react-icons/bs";
 import { AuthContext } from "../../auth/main-auth-functionality";
-import { WarningTwoIcon } from "@chakra-ui/icons";
+import { WarningTwoIcon, EmailIcon } from "@chakra-ui/icons";
 
 const DashboardDrawer: React.FC = () => {
   const { handleLogOut } = useContext(AuthContext);
@@ -55,17 +56,32 @@ const DashboardDrawer: React.FC = () => {
 
           <DrawerFooter>
             <Box w="100%" d="flex" flexDir="column">
-              <Button
-                onClick={logOut}
-                justifyContent="space-around"
-                w="100%"
-                margin="0 auto"
-                color="gray"
-                leftIcon={<WarningTwoIcon />}
-                mt={5}
-              >
-                Log Out
-              </Button>
+              <Stack spacing={5}>
+                <a href="mailto:pillgen27@gmail.com">
+                  <Button
+                    onClick={logOut}
+                    justifyContent="space-around"
+                    w="100%"
+                    margin="0 auto"
+                    color="gray"
+                    leftIcon={<EmailIcon />}
+                    mt={8}
+                  >
+                    Contact
+                  </Button>
+                </a>
+                <Button
+                  onClick={logOut}
+                  justifyContent="space-around"
+                  w="100%"
+                  margin="0 auto"
+                  color="gray"
+                  leftIcon={<WarningTwoIcon />}
+                  mt={5}
+                >
+                  Log Out
+                </Button>
+              </Stack>
             </Box>
           </DrawerFooter>
         </DrawerContent>
