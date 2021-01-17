@@ -21,23 +21,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { host, token } = req.headers;
   const { phoneNumber } = req.body;
   console.log(phoneNumber, "aaaaaaaaa");
-  if (
-    host === "localhost:3000" ||
-    host.includes("prottoy2938") ||
-    host.includes("pillzone")
-  ) {
-    const userInfo = await verifyIdToken(token.toString()); //checking if the user is authenticated
-    const { email, name, uid } = userInfo;
-    //creating new document in the 'Users' field with the users name
-    await db.collection("UserData").doc(uid).set({
-      accountCreated: admin.firestore.Timestamp.now(),
-      name: name,
-      email: email,
-      userUid: uid,
-      phoneNumber,
-    });
-    res.status(201).json("Successful");
-  } else {
-    res.status(401).send("You are unauthorized");
-  }
+
+  const userInfo = await verifyIdToken(token.toString()); //checking if the user is authenticated
+  const { email, name, uid } = userInfo;
+  //creating new document in the 'Users' field with the users name
+  await db.collection("UserData").doc(uid).set({
+    accountCreated: admin.firestore.Timestamp.now(),
+    name: name,
+    email: email,
+    userUid: uid,
+    phoneNumber,
+  });
+  res.status(201).json("Successful");
 };
