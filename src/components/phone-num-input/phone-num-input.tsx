@@ -70,14 +70,11 @@ export default function PhoneNumberInput({
           >
             <option value="" />
 
-            {
-              //@ts-expect-error
-              options.map((option) => (
-                <option key={uuid()} value={option.value}>
-                  {option.label}
-                </option>
-              ))
-            }
+            {options.map((option) => (
+              <option key={uuid()} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </Select>
           {selectedCountry ? <Box>{selectedCountry}</Box> : <PhoneIcon />}
         </Box>
