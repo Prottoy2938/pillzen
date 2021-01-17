@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Heading, Button, Box } from "@chakra-ui/react";
+import { Heading, Button, Box, Image } from "@chakra-ui/react";
 import Head from "next/head";
 import { AuthContext } from "../src/auth/main-auth-functionality";
 
@@ -12,15 +12,25 @@ const Home: React.FC = () => {
         <title>Pillzen</title>
       </Head>
       <Box display="table" m="0 auto">
-        <Heading display="table" m="0 auto" mb="50px">
+        <Heading display="table" m="0 auto" mb="35px">
           Pillzen
         </Heading>
-        <Heading fontSize="xl">Some App Description Here</Heading>
+        <Heading fontSize="xl">
+          Manage Your Medication Cycle with a Click of Your Camera
+        </Heading>
         <a href={user ? "/new-prescription" : "create-account"}>
-          <Button display="table" m="0 auto" mt="100px">
+          <Button display="table" m="0 auto" mt="60px">
             Get Started
           </Button>
         </a>
+        <Image
+          src="/pillzen-logo-2.jpg"
+          alt="logo"
+          w="300px"
+          borderRadius={5}
+          m="0 auto"
+          mt="120px"
+        />
       </Box>
     </>
   );
