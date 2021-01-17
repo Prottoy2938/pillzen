@@ -12,9 +12,17 @@ const Home: React.FC = () => {
         <title>Pillzen</title>
       </Head>
       <Box display="table" m="0 auto">
-        <Heading display="table" m="0 auto" mb="35px">
-          Pillzen
-        </Heading>
+        <Image
+          src="/pillzen-logo-2.png"
+          alt="logo"
+          w="300px"
+          borderRadius={5}
+          m="0 auto"
+          mt="5px"
+          display="table"
+          mb="35px"
+        />
+
         <Heading fontSize="xl">
           Manage Your Medication Cycle with a Click of Your Camera
         </Heading>
@@ -23,14 +31,17 @@ const Home: React.FC = () => {
             Get Started
           </Button>
         </a>
-        <Image
-          src="/pillzen-logo-2.jpg"
-          alt="logo"
-          w="300px"
-          borderRadius={5}
-          m="0 auto"
-          mt="120px"
-        />
+        <a href="https://pillzen.web.app/">
+          <Button
+            colorScheme="blue"
+            variant="ghost"
+            display="table"
+            m="0 auto"
+            mt="25px"
+          >
+            Chat
+          </Button>
+        </a>
       </Box>
     </>
   );
