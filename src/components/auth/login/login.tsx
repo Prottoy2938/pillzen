@@ -55,7 +55,7 @@ const UserLogin: React.FC = () => {
         >
           <div>
             <div className={styles.illusContent}>
-              <Text fontSize="2xl">Pillzone</Text>
+              <Text fontSize="2xl">Pillzen</Text>
             </div>
 
             <img
@@ -83,7 +83,7 @@ const UserLogin: React.FC = () => {
               bg={"black"}
             >
               <Text fontSize="2xl" color="black">
-                Pillzone
+                Pillzen
               </Text>
             </Box>
           </Box>

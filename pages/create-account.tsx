@@ -6,7 +6,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Create Account - Pillzone</title>
+        <title>Create Account - Pillzen</title>
 
         <meta property="og:type" content="website" />
       </Head>

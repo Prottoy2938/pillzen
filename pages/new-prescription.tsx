@@ -29,7 +29,9 @@ import axios from "axios";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import DashboardDrawer from "../src/components/drawer/drawer";
-import FormData from "form-data";
+import "@firebase/storage";
+
+const storage = firebase.default.storage();
 
 const Home: React.FC = () => {
   const { user, runningAuth } = useContext(AuthContext);
@@ -157,46 +159,37 @@ const Home: React.FC = () => {
           const imgFileData = new File([blob], `${new Date().getTime()}`, {
             type: "image/jpg",
           });
-          const data = new FormData();
 
-          data.append("imgFileData", imgFileData, imgFileData.fileName);
-          // data.append("phoneNumber", phoneNumber.toString());
-          // data.append("notificationMethod", notificationMethod.toString());
-          // data.append("name", userName.toString());
-          data.append(
-            "otherData",
-            JSON.stringify({
-              phoneNumber,
-              notificationMethod,
-              name: userName,
-            })
+          const storageRef = storage.ref(
+            `/UsersUploadedFiles/${user.uid}/${imgFileData.name}`
           );
-
-          axios
-            .post("https://3a4687ce719c.ngrok.io/detect_text", data, {
-              headers: {
-                accept: "application/json",
-                "Accept-Language": "en-US,en;q=0.8",
-                // 'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-                "Content-Type": `multipart/form-data; `,
-              },
-            })
-            .then((res) => {
-              //TODO: Handle data here
-              console.log(res);
-            })
-            .catch((e) => {
-              console.error(e);
-              toast({
-                title: "Something went wrong",
-                description:
-                  "The problem is on our side, we appreciate your patience.",
-                status: "warning",
-                duration: 9000,
-                isClosable: true,
-                position: "bottom-right",
-              });
+          storageRef.put(imgFileData).then(() => {
+            storageRef.getDownloadURL().then((imgDownloadURL) => {
+              axios
+                .post("https://3a4687ce719c.ngrok.io/detect_text", {
+                  imgDownloadURL,
+                  phoneNumber,
+                  userName,
+                  notificationMethod,
+                })
+                .then((res) => {
+                  //TODO: Handle data here
+                  console.log(res);
+                })
+                .catch((e) => {
+                  console.error(e);
+                  toast({
+                    title: "Something went wrong",
+                    description:
+                      "The problem is on our side, we appreciate your patience.",
+                    status: "warning",
+                    duration: 9000,
+                    isClosable: true,
+                    position: "bottom-right",
+                  });
+                });
             });
+          });
         });
     } else {
       toast({
@@ -214,7 +207,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Head>
-        <title>New Prescription | Pillzone</title>
+        <title>New Prescription | Pillzen</title>
       </Head>
 
       <Box pr={10} pl={10} mb={20}>

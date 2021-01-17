@@ -9,11 +9,11 @@ const Home: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Pillzone</title>
+        <title>Pillzen</title>
       </Head>
       <Box display="table" m="0 auto">
         <Heading display="table" m="0 auto" mb="50px">
-          Pillzone
+          Pillzen
         </Heading>
         <Heading fontSize="xl">Some App Description Here</Heading>
         <a href={user ? "/new-prescription" : "create-account"}>
