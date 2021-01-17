@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  Flex,
   Input,
   Select,
   InputGroup,
   InputLeftElement,
-  InputLeftAddon,
 } from "@chakra-ui/react";
-import Flag from "react-world-flags";
 import { AsYouType } from "libphonenumber-js";
 import { getCountryTelCode } from "./countries";
 import { v4 as uuid } from "uuid";
@@ -54,44 +51,42 @@ export default function PhoneNumberInput({
 
   return (
     <InputGroup size={size} {...rest}>
-      <InputLeftElement width="4rem">
-        <Select
-          top="0"
-          left="0"
-          zIndex={1}
-          bottom={0}
-          opacity={0}
-          height="100%"
-          position="absolute"
-          value={selectedCountry}
-          onChange={onCountryChange}
-        >
-          <option value="" />
+      <InputLeftElement
+        mr={2}
+        bg="rgb(237, 242, 247)"
+        borderRadius={2}
+        width="4rem"
+      >
+        <Box>
+          <Select
+            width="6rem"
+            pos="absolute"
+            left={-16}
+            top={0}
+            opacity={0}
+            zIndex={100}
+            value={selectedCountry}
+            onChange={onCountryChange}
+          >
+            <option value="" />
 
-          {
-            //@ts-expect-error
-            options.map((option) => (
-              <option key={uuid()} value={option.value}>
-                {option.label}
-              </option>
-            ))
-          }
-        </Select>
-        <Flex pr={1} pl={1} width="100%" alignItems="center">
-          {selectedCountry ? (
-            <Box mr="4px" width="50%" flex={1}>
-              <InputLeftAddon>{selectedCountry}</InputLeftAddon>
-            </Box>
-          ) : (
-            <PhoneIcon />
-          )}
-        </Flex>
+            {
+              //@ts-expect-error
+              options.map((option) => (
+                <option key={uuid()} value={option.value}>
+                  {option.label}
+                </option>
+              ))
+            }
+          </Select>
+          {selectedCountry ? <Box>{selectedCountry}</Box> : <PhoneIcon />}
+        </Box>
       </InputLeftElement>
       <Input
-        pl="4rem"
+        pl="5rem"
         type="tel"
         value={number}
-        pattern="[0-9]"
+        // pattern="[0-9]"
         placeholder={placeholder}
         onChange={onPhoneNumberChange}
       />
