@@ -103,7 +103,7 @@ const Home: React.FC = () => {
   };
 
   const handlePhoneNumChange = (e: any) => {
-    setUserName(e.target.value);
+    setPhoneNumber(e.target.value);
   };
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -142,14 +142,26 @@ const Home: React.FC = () => {
   };
 
   const handleSubmit = (): void => {
-    toast({
-      title: "Processing",
-      description: "Wait a while ....",
-      status: "info",
-      duration: 9000,
-      isClosable: true,
-      position: "bottom-right",
-    });
+    if (selectedImgURL && notificationMethod && phoneNumber && userName) {
+      toast({
+        title: "Processing",
+        description: "Wait a while ....",
+        status: "info",
+        duration: 9000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+    } else {
+      toast({
+        title: "Information Missing",
+        description:
+          "Make sure all four of these information are filled: Prescription Image, Name, Notification Method and Phone Number",
+        status: "warning",
+        duration: 9000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+    }
   };
 
   return (
@@ -196,7 +208,7 @@ const Home: React.FC = () => {
                   </Box>
                 </Box>
               </GridItem>
-              <GridItem m="0 auto" colSpan={3}>
+              <GridItem m="0 auto" colSpan={3} w="100%">
                 <Heading size="md" mb="30px">
                   Capture Image
                 </Heading>
@@ -307,9 +319,9 @@ const Home: React.FC = () => {
           </GridItem>
           <GridItem colSpan={3}>
             <Button
-              isDisabled={!selectedImgURL}
-              pr={26}
-              pl={26}
+              pr="60px"
+              pl="60px"
+              size="lg"
               bg="rgba(16, 181, 60, 0.7)"
               display="table"
               m="100px auto"
@@ -318,7 +330,7 @@ const Home: React.FC = () => {
               }}
               onClick={handleSubmit}
             >
-              Submit
+              Create Reminder
             </Button>
           </GridItem>
         </Grid>
