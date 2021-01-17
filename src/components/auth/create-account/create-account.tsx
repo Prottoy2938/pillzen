@@ -15,7 +15,10 @@ import {
   Grid,
   GridItem,
   useColorMode,
+  Heading,
 } from "@chakra-ui/react";
+import PhoneNumberInput from "../../phone-num-input/phone-num-input";
+import { COUNTRIES } from "../../phone-num-input/countries";
 
 const UserLogin: React.FC = () => {
   const { loginLoading, handleSignUp, emailError, passwordError } = useContext(
@@ -29,6 +32,11 @@ const UserLogin: React.FC = () => {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+
+  const countryOptions = COUNTRIES.map(({ name, iso }) => ({
+    label: name,
+    value: iso,
+  }));
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -183,13 +191,13 @@ const UserLogin: React.FC = () => {
                 </FormControl>
                 <FormControl isRequired>
                   <FormLabel htmlFor="phonenumber">Phone Number</FormLabel>
-                  <Input
-                    onChange={handlePhoneNumberChange}
-                    placeholder="Your Phone Number (include country code)"
-                    type="tel"
-                    id="phonenumber"
+                  <PhoneNumberInput
                     value={phoneNumber}
-                    autoFocus
+                    options={countryOptions}
+                    placeholder="Enter phone number"
+                    onChange={(value) => setPhoneNumber(value)}
+                    size="md"
+                    country=""
                   />
                 </FormControl>
                 <Box
