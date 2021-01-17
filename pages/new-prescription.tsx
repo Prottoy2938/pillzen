@@ -14,6 +14,9 @@ import {
   Text,
   Image,
   useToast,
+  Stack,
+  Input,
+  Select,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useDropzone } from "react-dropzone";
@@ -22,15 +25,79 @@ import Camera from "../src/components/use-camera/use-camera";
 import { AiOutlineCamera } from "react-icons/ai";
 import { AuthContext } from "../src/auth/main-auth-functionality";
 import { useRouter } from "next/router";
+import axios from "axios";
+import * as firebase from "firebase/app";
+import "firebase/auth";
 
 const Home: React.FC = () => {
   const { user, runningAuth } = useContext(AuthContext);
   const [selectedImgURL, setSelectedImgURL] = useState<string>(null);
   const [openCamera, setOpenCamera] = useState(false);
+  const [notificationMethod, setNotificationMethod] = useState("sms");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [userName, setUserName] = useState("");
 
   const toast = useToast();
 
   const cam = useRef(null);
+
+  const handleNotificationChange = (e) => {
+    setNotificationMethod(e.target.value);
+  };
+
+  useEffect(() => {
+    firebase.default
+      .auth()
+      .currentUser.getIdToken(/* forceRefresh */ true)
+      .then((idToken: string) => {
+        axios
+          .get(
+            "/api/get-user-data",
+
+            {
+              headers: {
+                token: idToken,
+              },
+            }
+          )
+          .then((res) => {
+            const { phoneNumber, name } = res.data;
+
+            setPhoneNumber(phoneNumber);
+            setUserName(name);
+          })
+          .catch((e) => {
+            toast({
+              title: "Something Went Wrong",
+              description:
+                "This issue is from us. We appreciate your patience ",
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+              position: "bottom-right",
+            });
+          });
+      })
+      .catch((e) => {
+        console.error(e);
+        toast({
+          title: "Something Went Wrong",
+          description: "Make Sure You're Signed in Properly",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+          position: "bottom-right",
+        });
+      });
+  }, []);
+
+  const handleNameChange = (e: any) => {
+    setUserName(e.target.value);
+  };
+
+  const handlePhoneNumChange = (e: any) => {
+    setUserName(e.target.value);
+  };
 
   const onDrop = useCallback((acceptedFiles) => {
     setSelectedImgURL(URL.createObjectURL(acceptedFiles[0]));
@@ -180,10 +247,68 @@ const Home: React.FC = () => {
                 </Box>
               </GridItem>
             </Grid>
+          </GridItem>
+          <GridItem m="0 auto" colSpan={3}>
+            <Heading mb="30px">Preview</Heading>
+            {selectedImgURL && selectedImgURL.length ? (
+              <Box>
+                <Image w="80%" src={selectedImgURL} alt="Uploaded Image" />
+              </Box>
+            ) : null}
+          </GridItem>
+        </Grid>
+
+        <Grid mt={"100px"} templateColumns="repeat(6, 1fr)" gap={4}>
+          <GridItem colSpan={3}>
+            <Heading mb="30px">Info</Heading>
+
+            <Stack spacing={10}>
+              <Stack spacing={5}>
+                <Heading size="sm">
+                  Name <span style={{ color: "red" }}>*</span>
+                </Heading>
+                <Input
+                  value={userName}
+                  onChange={handleNameChange}
+                  variant="filled"
+                  placeholder="Your Name"
+                />
+              </Stack>
+              <Stack spacing={5}>
+                <Heading size="sm">
+                  Phone Number <span style={{ color: "red" }}>*</span>
+                </Heading>
+                <Input
+                  variant="filled"
+                  placeholder="Phone Number to Receive Notifications"
+                  value={phoneNumber}
+                  onChange={handlePhoneNumChange}
+                />
+              </Stack>
+              <Stack spacing={5}>
+                <Heading size="sm">
+                  {" "}
+                  Notification Method <span style={{ color: "red" }}>*</span>
+                </Heading>
+                <Select
+                  value={notificationMethod}
+                  onChange={handleNotificationChange}
+                  variant="filled"
+                  w="80%"
+                  placeholder="Select Method"
+                >
+                  <option value="sms">Via SMS</option>
+                  <option value="phoneCall">Via Phone Call</option>
+                  <option value="both">Via SMS and Phone Call Both</option>
+                </Select>
+              </Stack>
+            </Stack>
+          </GridItem>
+          <GridItem colSpan={3}>
             <Button
               isDisabled={!selectedImgURL}
-              pr={20}
-              pl={20}
+              pr={26}
+              pl={26}
               bg="rgba(16, 181, 60, 0.7)"
               display="table"
               m="100px auto"
@@ -194,14 +319,6 @@ const Home: React.FC = () => {
             >
               Submit
             </Button>
-          </GridItem>
-          <GridItem m="0 auto" colSpan={3}>
-            <Heading mb="30px">Preview</Heading>
-            {selectedImgURL && selectedImgURL.length ? (
-              <Box>
-                <Image w="80%" src={selectedImgURL} alt="Uploaded Image" />
-              </Box>
-            ) : null}
           </GridItem>
         </Grid>
       </Box>
