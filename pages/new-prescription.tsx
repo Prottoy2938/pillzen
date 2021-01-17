@@ -28,6 +28,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import DashboardDrawer from "../src/components/drawer/drawer";
 
 const Home: React.FC = () => {
   const { user, runningAuth } = useContext(AuthContext);
@@ -322,6 +323,7 @@ const Home: React.FC = () => {
           </GridItem>
         </Grid>
       </Box>
+      <DashboardDrawer />
     </>
   );
 };
