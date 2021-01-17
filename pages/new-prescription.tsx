@@ -67,7 +67,6 @@ const Home: React.FC = () => {
     setOpenCamera(true);
   };
 
-<<<<<<< HEAD
   const handleSubmit = (): void => {
     toast({
       title: "Processing",
@@ -78,14 +77,12 @@ const Home: React.FC = () => {
       position: "bottom-right",
     });
   };
-=======
   useEffect(() => {
     //if the auth check if complete and the user is not logged-in, sending him to the join/login page
     if (!user && !runningAuth) {
       router.push("/login");
     }
   }, [user, runningAuth]);
->>>>>>> development
 
   return (
     <>
