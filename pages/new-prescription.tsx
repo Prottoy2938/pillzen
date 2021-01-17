@@ -29,6 +29,7 @@ import axios from "axios";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import DashboardDrawer from "../src/components/drawer/drawer";
+import FormData from "form-data";
 
 const Home: React.FC = () => {
   const { user, runningAuth } = useContext(AuthContext);
@@ -66,7 +67,6 @@ const Home: React.FC = () => {
               }
             )
             .then((res) => {
-              console.log(res.data);
               const { phoneNumber, name } = res.data;
 
               setPhoneNumber(phoneNumber);
@@ -151,6 +151,53 @@ const Home: React.FC = () => {
         isClosable: true,
         position: "bottom-right",
       });
+      fetch(selectedImgURL)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const imgFileData = new File([blob], `${new Date().getTime()}`, {
+            type: "image/jpg",
+          });
+          const data = new FormData();
+
+          data.append("imgFileData", imgFileData, imgFileData.fileName);
+          // data.append("phoneNumber", phoneNumber.toString());
+          // data.append("notificationMethod", notificationMethod.toString());
+          // data.append("name", userName.toString());
+          data.append(
+            "otherData",
+            JSON.stringify({
+              phoneNumber,
+              notificationMethod,
+              name: userName,
+            })
+          );
+
+          axios
+            .post("https://3a4687ce719c.ngrok.io/detect_text", data, {
+              headers: {
+                accept: "application/json",
+                "Accept-Language": "en-US,en;q=0.8",
+                // 'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+                "Content-Type": `multipart/form-data; `,
+              },
+            })
+            .then((res) => {
+              //TODO: Handle data here
+              console.log(res);
+            })
+            .catch((e) => {
+              console.error(e);
+              toast({
+                title: "Something went wrong",
+                description:
+                  "The problem is on our side, we appreciate your patience.",
+                status: "warning",
+                duration: 9000,
+                isClosable: true,
+                position: "bottom-right",
+              });
+            });
+        });
     } else {
       toast({
         title: "Information Missing",
