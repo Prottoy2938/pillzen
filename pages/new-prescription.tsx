@@ -409,8 +409,8 @@ const Home: React.FC = () => {
             </Text>
             <Text fontSize="sm" mt={8}>
               If you have any question, email us at:{" "}
-              <a href="mailto:pillgen27@gmail.com" style={{ color: "purple" }}>
-                pillgen27@gmail.com
+              <a href="mailto:pillzen27@gmail.com" style={{ color: "purple" }}>
+                pillzen27@gmail.com
               </a>
             </Text>
           </AlertDialogBody>
