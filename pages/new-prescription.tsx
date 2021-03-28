@@ -178,7 +178,7 @@ const Home: React.FC = () => {
           storageRef.put(imgFileData).then(() => {
             storageRef.getDownloadURL().then((imgDownloadURL) => {
               axios
-                .post("https://3a4687ce719c.ngrok.io/detect_text", {
+                .post("https://1ddf3125ac49.ngrok.io/detect_text", {
                   imgDownloadURL,
                   phoneNumber,
                   userName,
