@@ -159,7 +159,7 @@ const Home: React.FC = () => {
     if (selectedImgURL && notificationMethod && phoneNumber && userName) {
       toast({
         title: "Processing",
-        description: "Wait a while ....",
+        description: "Please wait....",
         status: "info",
         duration: 9000,
         isClosable: true,
