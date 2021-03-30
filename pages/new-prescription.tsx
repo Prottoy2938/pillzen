@@ -364,7 +364,7 @@ const Home: React.FC = () => {
                 >
                   <option value="sms">Via SMS</option>
                   <option value="phoneCall">Via Phone Call</option>
-                  <option value="both">Via SMS and Phone Call Both</option>
+                  <option value="both">Via both SMS & Phone Call</option>
                 </Select>
               </Stack>
             </Stack>
@@ -404,11 +404,10 @@ const Home: React.FC = () => {
           <AlertDialogBody>
             <Text>
               {" "}
-              You Will Receive Reminders on Your Phone When It's Time to Take
-              the Pills.
+              You will recieve a confirmation message to your phone shortly.
             </Text>
             <Text fontSize="sm" mt={8}>
-              If you have any question, email us at:{" "}
+              If you have any questions/concerns, email us at:{" "}
               <a href="mailto:pillzen27@gmail.com" style={{ color: "purple" }}>
                 pillzen27@gmail.com
               </a>
